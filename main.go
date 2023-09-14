@@ -6,13 +6,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	db "github.com/codewithed/hng_ix_02/db/sqlc"
 	"github.com/gofiber/fiber/v2"
+	_ "github.com/joho/godotenv"
 )
 
 func main() {
-	conn := ""
+	conn := fmt.Sprintf("%s,%s", os.Getenv("DB_DRIVER"), os.Getenv("DB_SOURCE"))
 	sqlDB, err := sql.Open("postgres", conn)
 	if err != nil {
 		log.Fatal(err)
@@ -123,4 +125,5 @@ func main() {
 		})
 	})
 
+	router.Listen(":" + os.Getenv("ADDRESS"))
 }
