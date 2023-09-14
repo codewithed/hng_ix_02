@@ -11,15 +11,25 @@ import (
 
 const createPerson = `-- name: CreatePerson :one
 INSERT INTO persons (
-    name
-) VALUES ($1)
-RETURNING id, name, created_at
+    name, bio
+) VALUES ($1, $2)
+RETURNING id, name, bio, created_at
 `
 
-func (q *Queries) CreatePerson(ctx context.Context, name string) (Person, error) {
-	row := q.db.QueryRowContext(ctx, createPerson, name)
+type CreatePersonParams struct {
+	Name string `json:"name"`
+	Bio  string `json:"bio"`
+}
+
+func (q *Queries) CreatePerson(ctx context.Context, arg CreatePersonParams) (Person, error) {
+	row := q.db.QueryRowContext(ctx, createPerson, arg.Name, arg.Bio)
 	var i Person
-	err := row.Scan(&i.ID, &i.Name, &i.CreatedAt)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Bio,
+		&i.CreatedAt,
+	)
 	return i, err
 }
 
@@ -33,31 +43,41 @@ func (q *Queries) DeletePerson(ctx context.Context, name string) error {
 }
 
 const getPerson = `-- name: GetPerson :one
-SELECT id, name, created_at FROM persons
+SELECT id, name, bio, created_at FROM persons
 WHERE name = $1 LIMIT 1
 `
 
 func (q *Queries) GetPerson(ctx context.Context, name string) (Person, error) {
 	row := q.db.QueryRowContext(ctx, getPerson, name)
 	var i Person
-	err := row.Scan(&i.ID, &i.Name, &i.CreatedAt)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Bio,
+		&i.CreatedAt,
+	)
 	return i, err
 }
 
 const updatePerson = `-- name: UpdatePerson :one
-UPDATE persons SET name = $1
+UPDATE persons SET bio = $1
 WHERE name = $2
-RETURNING id, name, created_at
+RETURNING id, name, bio, created_at
 `
 
 type UpdatePersonParams struct {
-	Name   string `json:"name"`
-	Name_2 string `json:"name_2"`
+	Bio  string `json:"bio"`
+	Name string `json:"name"`
 }
 
 func (q *Queries) UpdatePerson(ctx context.Context, arg UpdatePersonParams) (Person, error) {
-	row := q.db.QueryRowContext(ctx, updatePerson, arg.Name, arg.Name_2)
+	row := q.db.QueryRowContext(ctx, updatePerson, arg.Bio, arg.Name)
 	var i Person
-	err := row.Scan(&i.ID, &i.Name, &i.CreatedAt)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Bio,
+		&i.CreatedAt,
+	)
 	return i, err
 }

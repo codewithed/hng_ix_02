@@ -1,7 +1,7 @@
 -- name: CreatePerson :one
 INSERT INTO persons (
-    name
-) VALUES ($1)
+    name, bio
+) VALUES ($1, $2)
 RETURNING *;
 
 -- name: GetPerson :one
@@ -9,7 +9,7 @@ SELECT * FROM persons
 WHERE name = $1 LIMIT 1;
 
 -- name: UpdatePerson :one
-UPDATE persons SET name = $1
+UPDATE persons SET bio = $1
 WHERE name = $2
 RETURNING *;
 

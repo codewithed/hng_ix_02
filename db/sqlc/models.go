@@ -11,5 +11,6 @@ import (
 type Person struct {
 	ID        int32     `json:"id"`
 	Name      string    `json:"name"`
+	Bio       string    `json:"bio"`
 	CreatedAt time.Time `json:"created_at"`
 }
