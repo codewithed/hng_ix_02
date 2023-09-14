@@ -10,10 +10,11 @@ import (
 
 	db "github.com/codewithed/hng_ix_02/db/sqlc"
 	"github.com/gofiber/fiber/v2"
-	_ "github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 func main() {
+
 	conn := fmt.Sprintf("%s,%s", os.Getenv("DB_DRIVER"), os.Getenv("DB_SOURCE"))
 	sqlDB, err := sql.Open("postgres", conn)
 	if err != nil {
@@ -125,5 +126,5 @@ func main() {
 		})
 	})
 
-	router.Listen(":" + os.Getenv("ADDRESS"))
+	router.Listen(":" + os.Getenv("SERVER_ADDRESS"))
 }
