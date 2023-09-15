@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	db "github.com/codewithed/hng_ix_02/db/sqlc"
 	"github.com/gofiber/fiber/v2"
@@ -45,7 +46,8 @@ func main() {
 	})
 
 	router.Get("/:name", func(c *fiber.Ctx) error {
-		name := c.Params("name")
+		name_param := c.Params("name")
+		name := strings.ReplaceAll(name_param, "%20", " ")
 		/*user, err := queries.GetPerson(context.Background(), name)
 		if err != nil {
 			if err == sql.ErrNoRows {
