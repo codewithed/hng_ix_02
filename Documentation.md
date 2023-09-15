@@ -56,10 +56,12 @@
         "name": "Edmund Debrah",
         "age": 19
       }
-
+      
 - DELETE request:
     * Url example: https://localhost:3000/api/name
     * Response example: {
   "message": "deleted person: Edmund Debrah"
 }
      
+## Database Model
+https://dbdiagram.io/d/64fe37df02bd1c4a5e4cbe40
