@@ -14,6 +14,10 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type UpdatePerson struct {
+	Age int32 `json:"age,omitempty"`
+}
+
 func main() {
 
 	conn := os.Getenv("DB_SOURCE")
@@ -64,8 +68,15 @@ func main() {
 	})
 
 	router.Put("/:name", func(c *fiber.Ctx) error {
-		params := db.UpdatePersonParams{}
-		err := c.BodyParser(&params)
+		name_param := c.Params("name")
+		req := UpdatePerson{}
+		err := c.BodyParser(&req)
+		name := strings.ReplaceAll(name_param, "%20", " ")
+		params := db.UpdatePersonParams{
+			Name: name,
+			Age:  req.Age,
+		}
+
 		if err != nil {
 			return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 				"error": err.Error(),
@@ -87,8 +98,15 @@ func main() {
 	})
 
 	router.Patch("/:name", func(c *fiber.Ctx) error {
-		params := db.UpdatePersonParams{}
-		err := c.BodyParser(&params)
+		name_param := c.Params("name")
+		req := UpdatePerson{}
+		err := c.BodyParser(&req)
+		name := strings.ReplaceAll(name_param, "%20", " ")
+		params := db.UpdatePersonParams{
+			Name: name,
+			Age:  req.Age,
+		}
+
 		if err != nil {
 			return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 				"error": err.Error(),
@@ -110,14 +128,10 @@ func main() {
 	})
 
 	router.Delete("/:name", func(c *fiber.Ctx) error {
-		name := c.Params("name")
+		name_param := c.Params("name")
+		name := strings.ReplaceAll(name_param, "%20", " ")
 		err := queries.DeletePerson(context.Background(), name)
 		if err != nil {
-			if err == sql.ErrNoRows {
-				return c.Status(http.StatusNotFound).JSON(fiber.Map{
-					"error": err.Error(),
-				})
-			}
 			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(),
 			})
