@@ -31,7 +31,7 @@ func main() {
 
 	router := fiber.New()
 
-	router.Post("/", func(c *fiber.Ctx) error {
+	router.Post("/api", func(c *fiber.Ctx) error {
 		params := db.CreatePersonParams{}
 		err := c.BodyParser(&params)
 		if err != nil {
@@ -49,7 +49,7 @@ func main() {
 		return c.Status(http.StatusOK).JSON(user)
 	})
 
-	router.Get("/:name", func(c *fiber.Ctx) error {
+	router.Get("/api/:name", func(c *fiber.Ctx) error {
 		name_param := c.Params("name")
 		name := strings.ReplaceAll(name_param, "%20", " ")
 		user, err := queries.GetPerson(context.Background(), name)
@@ -67,7 +67,7 @@ func main() {
 		return c.Status(http.StatusOK).JSON(user)
 	})
 
-	router.Put("/:name", func(c *fiber.Ctx) error {
+	router.Put("/api/:name", func(c *fiber.Ctx) error {
 		name_param := c.Params("name")
 		req := UpdatePerson{}
 		err := c.BodyParser(&req)
@@ -97,7 +97,7 @@ func main() {
 		return c.Status(http.StatusOK).JSON(user)
 	})
 
-	router.Patch("/:name", func(c *fiber.Ctx) error {
+	router.Patch("/api/:name", func(c *fiber.Ctx) error {
 		name_param := c.Params("name")
 		req := UpdatePerson{}
 		err := c.BodyParser(&req)
@@ -127,7 +127,7 @@ func main() {
 		return c.Status(http.StatusOK).JSON(user)
 	})
 
-	router.Delete("/:name", func(c *fiber.Ctx) error {
+	router.Delete("/api/:name", func(c *fiber.Ctx) error {
 		name_param := c.Params("name")
 		name := strings.ReplaceAll(name_param, "%20", " ")
 		err := queries.DeletePerson(context.Background(), name)
