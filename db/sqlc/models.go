@@ -4,13 +4,10 @@
 
 package db
 
-import (
-	"time"
-)
+import ()
 
 type Person struct {
-	ID        int32     `json:"id"`
-	Name      string    `json:"name"`
-	Bio       string    `json:"bio"`
-	CreatedAt time.Time `json:"created_at"`
+	ID   int32  `json:"id"`
+	Name string `json:"name"`
+	Age  int32  `json:"age"`
 }
