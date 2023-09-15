@@ -46,7 +46,7 @@ func main() {
 
 	router.Get("/:name", func(c *fiber.Ctx) error {
 		name := c.Params("name")
-		user, err := queries.GetPerson(context.Background(), name)
+		/*user, err := queries.GetPerson(context.Background(), name)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				return c.Status(http.StatusNotFound).JSON(fiber.Map{
@@ -56,9 +56,9 @@ func main() {
 			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(),
 			})
-		}
+		}*/
 
-		return c.Status(http.StatusOK).JSON(user)
+		return c.Status(http.StatusOK).JSON(name)
 	})
 
 	router.Put("/:name", func(c *fiber.Ctx) error {
