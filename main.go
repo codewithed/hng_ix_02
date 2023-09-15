@@ -48,7 +48,7 @@ func main() {
 	router.Get("/:name", func(c *fiber.Ctx) error {
 		name_param := c.Params("name")
 		name := strings.ReplaceAll(name_param, "%20", " ")
-		/*user, err := queries.GetPerson(context.Background(), name)
+		user, err := queries.GetPerson(context.Background(), name)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				return c.Status(http.StatusNotFound).JSON(fiber.Map{
@@ -58,9 +58,9 @@ func main() {
 			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(),
 			})
-		}*/
+		}
 
-		return c.Status(http.StatusOK).JSON(name)
+		return c.Status(http.StatusOK).JSON(user)
 	})
 
 	router.Put("/:name", func(c *fiber.Ctx) error {
