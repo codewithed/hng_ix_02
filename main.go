@@ -15,8 +15,9 @@ import (
 
 func main() {
 
-	conn := fmt.Sprintf("%s,%s", os.Getenv("DB_DRIVER"), os.Getenv("DB_SOURCE"))
-	sqlDB, err := sql.Open("postgres", conn)
+	conn := os.Getenv("DB_SOURCE")
+	dbDriver := os.Getenv("DB_DRIVER")
+	sqlDB, err := sql.Open(dbDriver, conn)
 	if err != nil {
 		log.Fatal(err)
 	}
